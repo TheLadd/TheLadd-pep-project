@@ -3,6 +3,11 @@ package Controller;
 import io.javalin.Javalin;
 import io.javalin.http.Context;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+
+import Model.Account;
+import Model.Message;
 import Service.AccountService;
 import Service.MessageService;
 
@@ -12,6 +17,13 @@ import Service.MessageService;
  * refer to prior mini-project labs and lecture materials for guidance on how a controller may be built.
  */
 public class SocialMediaController {
+    private AccountService accountService;
+    private MessageService messageService;
+
+    SocialMediaController() {
+        accountService = new AccountService();
+        messageService = new MessageService();
+    }
     /**
      * In order for the test cases to work, you will need to write the endpoints in the startAPI() method, as the test
      * suite must receive a Javalin object from this method.
@@ -20,6 +32,18 @@ public class SocialMediaController {
     public Javalin startAPI() {
         Javalin app = Javalin.create();
         app.get("example-endpoint", this::exampleHandler);
+
+        // Account routes
+        app.post("register", this::accountRegisterHandler);
+        app.post("login", this::accountLoginHandler);
+
+        // Message routes
+        app.post("messages", this::createNewMessageHandler);
+        app.get("messages", this::getAllMessagesHandler);
+        app.get("messages/{message_id}", this::getMessageByIdHandler);
+        app.delete("messages/{message_id}", this::deleteMessageByIdHandler);
+        app.patch("messages/{message_id}", this::updateMessageByIdHandler);
+        app.get("accounts/{account_id}/messages", this::getAllMessagesFromUserHandler);
 
         return app;
     }
@@ -39,7 +63,19 @@ public class SocialMediaController {
      *  status should be 200 OK, which is the default. The new account should be persisted to the database. 
      *  If the registration is not successful, the response status should be 400. (Client error)
      */
-    public void accountRegisterHandler(String un, String pw) {}
+    public void accountRegisterHandler(Context ctx) throws JsonProcessingException {
+        ObjectMapper om = new ObjectMapper();
+        Account acc = om.readValue(ctx.body(), Account.class);
+        Account accAdded = accountService.register(acc);
+
+        if (accAdded != null) {
+            ctx.json(accAdded);
+            ctx.status(200);
+        }
+        else {
+            ctx.status(400);
+        }
+    }
 
     /*
      * TODO: The login will be successful if and only if the username and password provided in the request body 
@@ -64,7 +100,7 @@ public class SocialMediaController {
      *  the database. It is expected for the list to simply be empty if there are no messages. The response status 
      *  should always be 200, which is the default.
      */
-    public void getAllMessagesHanlder(Context ctx) {}
+    public void getAllMessagesHandler(Context ctx) {}
 
     /*
     * TODO: The response body should contain a JSON representation of the message identified by the message_id. 
@@ -81,7 +117,7 @@ public class SocialMediaController {
      *  is because the DELETE verb is intended to be idempotent, ie, multiple calls to the DELETE endpoint should 
      *  respond with the same type of response.
      */
-    public void deleteMessageById(Context ctx) {}
+    public void deleteMessageByIdHandler(Context ctx) {}
 
     /*
      * TODO: The update of a message should be successful if and only if the message id already exists and the new 
@@ -92,7 +128,7 @@ public class SocialMediaController {
      * If the update of the message is not successful for any reason, the response status should be 400. (Client 
      *  error)
      */
-    public void updateMessageById(Context ctx) {}
+    public void updateMessageByIdHandler(Context ctx) {}
 
     /*
      * TODO: The response body should contain a JSON representation of a list containing all messages posted by 

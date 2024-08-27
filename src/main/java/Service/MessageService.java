@@ -7,7 +7,7 @@ import java.util.List;
 public class MessageService {
     private MessageDAO messageDAO;
 
-    MessageService() {
+    public MessageService() {
         messageDAO = new MessageDAO();
     }
 

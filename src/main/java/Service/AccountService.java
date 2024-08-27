@@ -6,7 +6,7 @@ import DAO.AccountDAO;
 public class AccountService {
     private AccountDAO accountDAO;
 
-    AccountService() {
+    public AccountService() {
         accountDAO = new AccountDAO();
     }
 
@@ -17,8 +17,12 @@ public class AccountService {
      *  status should be 200 OK, which is the default. The new account should be persisted to the database. 
      *  If the registration is not successful, the response status should be 400. (Client error)
      */
-    public Account register(String un, String pw) {
-        return null;
+    public Account register(Account acc) {
+        if (acc.getUsername().length() < 4 || accountDAO.accountExists(acc) != null) {
+            return null;
+        } 
+
+        return accountDAO.createAccount(acc);
     }
 
     /*
