@@ -18,7 +18,7 @@ public class AccountService {
      *  If the registration is not successful, the response status should be 400. (Client error)
      */
     public Account register(Account acc) {
-        if (acc.getUsername().length() < 4 || accountDAO.accountExists(acc) != null) {
+        if (acc.getUsername() == null || acc.getPassword().length() < 4 || accountDAO.accountExists(acc) != null) {
             return null;
         } 
 
