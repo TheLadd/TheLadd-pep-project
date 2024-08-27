@@ -20,7 +20,7 @@ public class SocialMediaController {
     private AccountService accountService;
     private MessageService messageService;
 
-    SocialMediaController() {
+    public SocialMediaController() {
         accountService = new AccountService();
         messageService = new MessageService();
     }
@@ -34,7 +34,7 @@ public class SocialMediaController {
         app.get("example-endpoint", this::exampleHandler);
 
         // Account routes
-        app.post("register", this::accountRegisterHandler);
+        app.post("/register", this::accountRegisterHandler);
         app.post("login", this::accountLoginHandler);
 
         // Message routes
@@ -69,7 +69,7 @@ public class SocialMediaController {
         Account accAdded = accountService.register(acc);
 
         if (accAdded != null) {
-            ctx.json(accAdded);
+            ctx.json(om.writeValueAsString(accAdded));
             ctx.status(200);
         }
         else {
