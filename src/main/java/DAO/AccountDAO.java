@@ -54,6 +54,7 @@ public class AccountDAO {
             // Parse result
             while (rs.next()) {
                 Account foundAcc = new Account(
+                    rs.getInt("account_id"),
                     rs.getString("username"),
                     rs.getString("password")
                 );

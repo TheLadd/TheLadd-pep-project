@@ -82,9 +82,21 @@ public class SocialMediaController {
      *  JSON match a real account existing on the database. If successful, the response body should contain a 
      *  JSON of the account in the response body, including its account_id. The response status should be 200 OK, 
      *  which is the default.
-     *  If the login is not successful, the response status should be 401. (Unauthoriz
+     *  If the login is not successful, the response status should be 401. (Unauthorized)
     */
-    public void accountLoginHandler(Context ctx) {}
+    public void accountLoginHandler(Context ctx) throws JsonProcessingException {
+        ObjectMapper om = new ObjectMapper();
+        Account acc = om.readValue(ctx.body(), Account.class);
+        Account accReturned = accountService.login(acc);
+
+        if (accReturned != null) {
+            ctx.json(accReturned);
+            ctx.status(200);
+        }
+        else {
+            ctx.status(401);
+        }
+    }
 
     /*
      * TODO: The creation of the message will be successful if and only if the message_text is not blank, is under 

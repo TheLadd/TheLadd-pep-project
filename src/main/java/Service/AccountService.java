@@ -32,8 +32,8 @@ public class AccountService {
      *  which is the default.
      *  If the login is not successful, the response status should be 401. (Unauthoriz
     */
-    public Account login(String un, String pw) {
-        return null;
+    public Account login(Account a) {
+        return accountDAO.accountExists(a);
     }
 }
 
