@@ -52,7 +52,7 @@ public class MessageService {
      *  should always be 200, which is the default.
      */
     public Message getMessageById(int id) {
-        return null;
+        return messageDAO.getMessageById(id);
     }
 
     /*

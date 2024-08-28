@@ -40,9 +40,6 @@ public class MessageDAO {
         return null;
     }
 
-    /*
-     * TODO: Get all messages
-     */
     public List<Message> getAllMessages() {
         Connection c = ConnectionUtil.getConnection();
         try {
@@ -74,6 +71,28 @@ public class MessageDAO {
      * TODO: Get a single message by its ID
      */
     public Message getMessageById(int id) {
+        Connection c = ConnectionUtil.getConnection();
+        try {
+            // Prepare and execute query
+            String sql = "SELECT * FROM message WHERE message_id = ?";
+            PreparedStatement ps = c.prepareStatement(sql);
+            ps.setInt(1, id);
+            ResultSet rs = ps.executeQuery();
+            
+            // Parse and return result
+            while (rs.next()) {
+                Message msg = new Message(
+                    rs.getInt("message_id"),
+                    rs.getInt("posted_by"),
+                    rs.getString("message_text"),
+                    rs.getLong("time_posted_epoch")
+                );
+                return msg;
+            }
+        }
+        catch (SQLException e ) {
+            e.printStackTrace();
+        }
         return null;
     }
 

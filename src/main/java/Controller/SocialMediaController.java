@@ -136,7 +136,13 @@ public class SocialMediaController {
     *  It is expected for the response body to simply be empty if there is no such message. The response status 
     *  should always be 200, which is the default.
     */
-   public void getMessageByIdHandler(Context ctx) {}
+   public void getMessageByIdHandler(Context ctx) {
+        int id = Integer.valueOf(ctx.pathParam("message_id"));
+        Message msg = messageService.getMessageById(id);
+        if (msg != null) {
+            ctx.json(msg);
+        }
+   }
 
    /*
      * TODO: The deletion of an existing message should remove an existing message from the database. If the message 
