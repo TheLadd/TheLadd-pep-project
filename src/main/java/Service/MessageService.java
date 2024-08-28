@@ -1,14 +1,19 @@
 package Service;
 
 import Model.Message;
+import Model.Account;
 import DAO.MessageDAO;
+import DAO.AccountDAO;
 import java.util.List;
+import java.util.ArrayList;
 
 public class MessageService {
     private MessageDAO messageDAO;
+    private AccountDAO accountDAO;
 
     public MessageService() {
         messageDAO = new MessageDAO();
+        accountDAO = new AccountDAO();
     }
 
     /*
@@ -19,7 +24,13 @@ public class MessageService {
      * successful, the response status should be 400. (Client error)
      */
     public Message createNewMessage(Message msg) {
-        return null;
+        String msgText = msg.getMessage_text();
+        Account userExists = accountDAO.accountExists(msg.getMessage_id());
+        if (msgText == "" || msgText.length() > 255 || userExists != null) {
+            return null;
+        }
+
+        return messageDAO.createMessage(msg);
     }
 
     /*
@@ -28,7 +39,11 @@ public class MessageService {
      *  should always be 200, which is the default.
      */
     public List<Message> getAllMessages() {
-        return null;
+        List<Message> msgs = messageDAO.getAllMessages();
+        if (msgs == null) {
+            return new ArrayList<Message>();
+        }
+        return msgs;
     }
 
     /*

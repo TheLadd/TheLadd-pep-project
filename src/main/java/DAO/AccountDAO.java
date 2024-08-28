@@ -10,12 +10,8 @@ import Util.ConnectionUtil;
 import Model.Account;
 
 public class AccountDAO {
-    /*
-     * TODO: create account
-     */
     public Account createAccount(Account a) {
         Connection c = ConnectionUtil.getConnection();
-
         try {
             // Prepare and execute SQL statement
             String sql = "INSERT INTO account (username, password) VALUES (?, ?)";
@@ -37,9 +33,6 @@ public class AccountDAO {
         return null;
     }
 
-    /*
-     * TODO: Check if account exists
-     */
     public Account accountExists(Account a) {
         Connection c = ConnectionUtil.getConnection();
         
@@ -64,5 +57,30 @@ public class AccountDAO {
             e.printStackTrace();
         }
         return null; 
+    }
+
+    public Account accountExists(int id) {
+        Connection c = ConnectionUtil.getConnection();
+
+        try {
+            // Prepare and execute SQL statement
+            String sql = "SELECT * FROM account WHERE account_id = ?";
+            PreparedStatement ps = c.prepareStatement(sql);
+            ps.setInt(1, id);
+            ResultSet rs = ps.executeQuery();
+
+            // Parse result
+            while (rs.next()) {
+                Account acc = new Account(
+                    rs.getInt("account_id"),
+                    rs.getString("username"),
+                    rs.getString("password")
+                );
+                return acc;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 }

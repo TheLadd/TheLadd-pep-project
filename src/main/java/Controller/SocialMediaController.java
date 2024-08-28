@@ -10,6 +10,7 @@ import Model.Account;
 import Model.Message;
 import Service.AccountService;
 import Service.MessageService;
+import java.util.List;
 
 /**
  * TODO: You will need to write your own endpoints and handlers for your controller. The endpoints you will need can be
@@ -57,7 +58,7 @@ public class SocialMediaController {
     }
 
     /*
-     * TODO: The registration will be successful if and only if the username is not blank, the password is at 
+     * The registration will be successful if and only if the username is not blank, the password is at 
      *  least 4 characters long, and an Account with that username does not already exist. If all these conditions 
      *  are met, the response body should contain a JSON of the Account, including its account_id. The response 
      *  status should be 200 OK, which is the default. The new account should be persisted to the database. 
@@ -78,7 +79,7 @@ public class SocialMediaController {
     }
 
     /*
-     * TODO: The login will be successful if and only if the username and password provided in the request body 
+     * The login will be successful if and only if the username and password provided in the request body 
      *  JSON match a real account existing on the database. If successful, the response body should contain a 
      *  JSON of the account in the response body, including its account_id. The response status should be 200 OK, 
      *  which is the default.
@@ -99,20 +100,36 @@ public class SocialMediaController {
     }
 
     /*
-     * TODO: The creation of the message will be successful if and only if the message_text is not blank, is under 
+     * The creation of the message will be successful if and only if the message_text is not blank, is under 
      *  255 characters, and posted_by refers to a real, existing user. If successful, the response body should 
      *  contain a JSON of the message, including its message_id. The response status should be 200, which is the 
      *  default. The new message should be persisted to the database. If the creation of the message is not 
      * successful, the response status should be 400. (Client error)
      */
-    public void createNewMessageHandler(Context ctx) {}
+    public void createNewMessageHandler(Context ctx) throws JsonProcessingException {
+        ObjectMapper om = new ObjectMapper();
+        Message msg = om.readValue(ctx.body(), Message.class);
+        Message msgCreated = messageService.createNewMessage(msg);
+
+        if (msgCreated != null) {
+            ctx.json(msgCreated);
+            ctx.status(200);
+        }
+        else {
+            ctx.status(400);
+        }
+    }
 
     /*
-     * TODO: The response body should contain a JSON representation of a list containing all messages retrieved from 
+     * The response body should contain a JSON representation of a list containing all messages retrieved from 
      *  the database. It is expected for the list to simply be empty if there are no messages. The response status 
      *  should always be 200, which is the default.
      */
-    public void getAllMessagesHandler(Context ctx) {}
+    public void getAllMessagesHandler(Context ctx) {
+        List<Message> msgs = messageService.getAllMessages();
+        ctx.json(msgs); // getAllMessages() should, at the very least, return an empty list
+        ctx.status(200);
+    }
 
     /*
     * TODO: The response body should contain a JSON representation of the message identified by the message_id. 
