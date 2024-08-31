@@ -95,9 +95,6 @@ public class MessageDAO {
         return null;
     }
 
-    /*
-     * TODO: Delete a message by its ID
-     */
     public Message deleteMessageById(int id) {
         Connection c = ConnectionUtil.getConnection();
         try {
@@ -136,9 +133,6 @@ public class MessageDAO {
         return null;
     }
 
-    /*
-     * TODO: Update a message by its ID
-     */
     public Message updateMessageById(int id, String msgBody) {
         Connection c = ConnectionUtil.getConnection();
         try {
@@ -175,9 +169,6 @@ public class MessageDAO {
         return null;
     }
 
-    /*
-     * Get all messages from an account given its poster's account ID
-     */
     public List<Message> getAllMessagesByAccountId(int accountId) {
         Connection c = ConnectionUtil.getConnection();
         try {

@@ -17,7 +17,7 @@ public class MessageService {
     }
 
     /*
-     * TODO: The creation of the message will be successful if and only if the message_text is not blank, is under 
+     * The creation of the message will be successful if and only if the message_text is not blank, is under 
      *  255 characters, and posted_by refers to a real, existing user. If successful, the response body should 
      *  contain a JSON of the message, including its message_id. The response status should be 200, which is the 
      *  default. The new message should be persisted to the database. If the creation of the message is not 
@@ -34,7 +34,7 @@ public class MessageService {
     }
 
     /*
-     * TODO: The response body should contain a JSON representation of a list containing all messages retrieved from 
+     * The response body should contain a JSON representation of a list containing all messages retrieved from 
      *  the database. It is expected for the list to simply be empty if there are no messages. The response status 
      *  should always be 200, which is the default.
      */
@@ -56,7 +56,7 @@ public class MessageService {
     }
 
     /*
-     * TODO: The deletion of an existing message should remove an existing message from the database. If the message 
+     * The deletion of an existing message should remove an existing message from the database. If the message 
      *  existed, the response body should contain the now-deleted message. The response status should be 200, which 
      *  is the default.
      * If the message did not exist, the response status should be 200, but the response body should be empty. This 
@@ -68,7 +68,7 @@ public class MessageService {
     }
 
     /*
-     * TODO: The update of a message should be successful if and only if the message id already exists and the new 
+     * The update of a message should be successful if and only if the message id already exists and the new 
      *  message_text is not blank and is not over 255 characters. 
      * If the update is successful, the response body should contain the full updated message (including 
      *  message_id, posted_by, message_text, and time_posted_epoch), and the response status should be 200, which 
@@ -84,7 +84,7 @@ public class MessageService {
     }
 
     /*
-     * TODO: The response body should contain a JSON representation of a list containing all messages posted by 
+     * The response body should contain a JSON representation of a list containing all messages posted by 
      *  a particular user, which is retrieved from the database. It is expected for the list to simply be empty 
      *  if there are no messages. The response status should always be 200, which is the default
     */
