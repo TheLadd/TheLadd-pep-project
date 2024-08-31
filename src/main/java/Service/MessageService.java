@@ -47,7 +47,7 @@ public class MessageService {
     }
 
     /*
-     * TODO: The response body should contain a JSON representation of the message identified by the message_id. 
+     * The response body should contain a JSON representation of the message identified by the message_id. 
      *  It is expected for the response body to simply be empty if there is no such message. The response status 
      *  should always be 200, which is the default.
      */
@@ -64,7 +64,7 @@ public class MessageService {
      *  respond with the same type of response.
      */
     public Message deleteMessageById(int id) {
-        return null;
+        return messageDAO.deleteMessageById(id);
     }
 
     /*
@@ -76,8 +76,11 @@ public class MessageService {
      * If the update of the message is not successful for any reason, the response status should be 400. (Client 
      *  error)
      */
-    public Message updateMessageById(int id) {
-        return null;
+    public Message updateMessageById(int id, String msgBody) {
+        if (msgBody == "" || msgBody.length() > 255) {
+            return null;
+        }
+        return messageDAO.updateMessageById(id, msgBody);
     }
 
     /*

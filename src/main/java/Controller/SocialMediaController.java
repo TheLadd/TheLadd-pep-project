@@ -128,11 +128,10 @@ public class SocialMediaController {
     public void getAllMessagesHandler(Context ctx) {
         List<Message> msgs = messageService.getAllMessages();
         ctx.json(msgs); // getAllMessages() should, at the very least, return an empty list
-        ctx.status(200);
     }
 
     /*
-    * TODO: The response body should contain a JSON representation of the message identified by the message_id. 
+    * The response body should contain a JSON representation of the message identified by the message_id. 
     *  It is expected for the response body to simply be empty if there is no such message. The response status 
     *  should always be 200, which is the default.
     */
@@ -145,14 +144,20 @@ public class SocialMediaController {
    }
 
    /*
-     * TODO: The deletion of an existing message should remove an existing message from the database. If the message 
+     * The deletion of an existing message should remove an existing message from the database. If the message 
      *  existed, the response body should contain the now-deleted message. The response status should be 200, which 
      *  is the default.
      * If the message did not exist, the response status should be 200, but the response body should be empty. This 
      *  is because the DELETE verb is intended to be idempotent, ie, multiple calls to the DELETE endpoint should 
      *  respond with the same type of response.
      */
-    public void deleteMessageByIdHandler(Context ctx) {}
+    public void deleteMessageByIdHandler(Context ctx) {
+        int id = Integer.valueOf( ctx.pathParam("message_id") );
+        Message msg = messageService.deleteMessageById(id);
+        if (msg != null) {
+            ctx.json(msg);
+        }
+    }
 
     /*
      * TODO: The update of a message should be successful if and only if the message id already exists and the new 
@@ -163,7 +168,17 @@ public class SocialMediaController {
      * If the update of the message is not successful for any reason, the response status should be 400. (Client 
      *  error)
      */
-    public void updateMessageByIdHandler(Context ctx) {}
+    public void updateMessageByIdHandler(Context ctx) throws JsonProcessingException {
+        int id = Integer.valueOf( ctx.pathParam("message_id") );
+        ObjectMapper om = new ObjectMapper();
+        String msgBody = om.readTree( ctx.body() ).get("message_text").asText();
+        Message msg = messageService.updateMessageById(id, msgBody);
+        if (msg != null) {
+            ctx.json(msg);
+        } else {
+            ctx.status(400);
+        }
+    }
 
     /*
      * TODO: The response body should contain a JSON representation of a list containing all messages posted by 
