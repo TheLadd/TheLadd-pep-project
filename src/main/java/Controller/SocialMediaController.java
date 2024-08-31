@@ -160,7 +160,7 @@ public class SocialMediaController {
     }
 
     /*
-     * TODO: The update of a message should be successful if and only if the message id already exists and the new 
+     * The update of a message should be successful if and only if the message id already exists and the new 
      *  message_text is not blank and is not over 255 characters. 
      * If the update is successful, the response body should contain the full updated message (including 
      *  message_id, posted_by, message_text, and time_posted_epoch), and the response status should be 200, which 
@@ -185,5 +185,9 @@ public class SocialMediaController {
      *  a particular user, which is retrieved from the database. It is expected for the list to simply be empty 
      *  if there are no messages. The response status should always be 200, which is the default
     */
-    public void getAllMessagesFromUserHandler(Context ctx) {}
+    public void getAllMessagesFromUserHandler(Context ctx) {
+        int account_id = Integer.valueOf( ctx.pathParam("account_id") );
+        List<Message> msgsFromUser = messageService.getAllMessagesFromUser(account_id);
+        ctx.json(msgsFromUser);
+    }
 }

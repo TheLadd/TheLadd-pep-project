@@ -176,9 +176,32 @@ public class MessageDAO {
     }
 
     /*
-     * TODO: Get all messages from an account given its poster's account ID
+     * Get all messages from an account given its poster's account ID
      */
     public List<Message> getAllMessagesByAccountId(int accountId) {
-        return null;
+        Connection c = ConnectionUtil.getConnection();
+        try {
+            // Prepare and execute query
+            PreparedStatement ps = c.prepareStatement("SELECT * FROM message WHERE posted_by=?");
+            ps.setInt(1, accountId);
+            ResultSet rs = ps.executeQuery();
+
+            // Parse and return input
+            List<Message> msgs = new ArrayList<>();
+            Message temp;
+            while (rs.next()) {
+                temp = new Message(
+                    rs.getInt("message_id"),
+                    rs.getInt("posted_by"),
+                    rs.getString("message_text"),
+                    rs.getLong("time_posted_epoch")
+                );
+                msgs.add(temp);
+            }
+            return msgs;
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return new ArrayList<>();
     }
 }

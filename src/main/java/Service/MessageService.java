@@ -89,6 +89,6 @@ public class MessageService {
      *  if there are no messages. The response status should always be 200, which is the default
     */
     public List<Message> getAllMessagesFromUser(int accountId) {
-        return null;
+        return messageDAO.getAllMessagesByAccountId(accountId);
     }
 }
